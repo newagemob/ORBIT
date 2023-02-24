@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 
 
-def scrape_sp500_stocks(stocks_csv_path: str) -> pd.DataFrame:
+def scrape_sp500_stocks() -> pd.DataFrame:
     """
     Reads in a CSV file containing a list of S&P 500 stocks and returns a DataFrame.
     
@@ -15,7 +15,8 @@ def scrape_sp500_stocks(stocks_csv_path: str) -> pd.DataFrame:
     slickcharts_url = "https://www.slickcharts.com/sp500"
     page = requests.get(slickcharts_url)
     df = pd.read_html(requests.get(slickcharts_url ,headers={'User-agent': 'Mozilla/5.0'}).text)[0]
-    df.to_csv(stocks_csv_path, index=False)
+    df.to_csv("SP500.csv", index=False)
+    
     return df
 
 
