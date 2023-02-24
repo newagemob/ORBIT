@@ -1,0 +1,19 @@
+# ORBIT (Optimized Risk Base Intelligence Trading) is an algorithmic trading pipeline. It is a framework for building, testing, and deploying trading strategies. It is designed to be modular and flexible, allowing you to build your own strategies and backtest them against historical data. It is also designed to be easy to use, allowing you to quickly build and test strategies without having to worry about the underlying implementation details.
+
+name: orbit
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - matplotlib
+  - numpy
+  - jupyterlab
+  - requests
+  - beautifulsoup4
+  - pytest
+  - ta
+  - scikit-learn
+  - seaborn
+  - statsmodels

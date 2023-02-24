@@ -2,9 +2,11 @@
 
 ***Optimized Risk-Based Intelligence Trading***
 
-# Workflow Steps
+# Order of Operations
 
 Steps to take for every trade:
+
+* Data collection: Collect data from exchanges, news outlets, social media platforms, and economic calendars. This could involve scraping websites, accessing APIs, or downloading data from databases.
 
 * Stock market data analysis: You will need to use libraries such as Pandas and NumPy to import and analyze stock market data. Pandas is a library used for data manipulation and analysis, while NumPy is a library used for mathematical and statistical operations.
 
