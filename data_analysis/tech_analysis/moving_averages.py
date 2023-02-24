@@ -14,6 +14,7 @@ import numpy as np
 import ta
 
 def technical_analysis(tickers):
+    results = {}
     for i, ticker in enumerate(tickers):
         # Download stock data from Yahoo Finance
         data = yf.download(ticker, period='max', interval='1d')
@@ -30,15 +31,18 @@ def technical_analysis(tickers):
 
         # Add columns to indicate buy/sell signals
         data['Signal'] = 0.0
-        data['Signal'] = np.where(data['SMA_20'] > data['SMA_50'], 1.0, 0.0)
-        data['Signal'] = np.where(data['EMA_20'] > data['EMA_50'], 1.0, 0.0)
-        data['Signal'] = np.where(data['RSI'] < 30, 1.0, 0.0)
-        data['Signal'] = np.where(data['MACD'] > 0, 1.0, 0.0)
+        data.loc[data['SMA_20'] > data['SMA_50'], 'Signal'] = 1.0
+        data.loc[data['EMA_20'] > data['EMA_50'], 'Signal'] = 1.0
+        data.loc[data['RSI'] < 30, 'Signal'] = 1.0
+        data.loc[data['MACD'] > 0, 'Signal'] = 1.0
 
         # Calculate returns based on buy/sell signals
         data['BuyHold'] = data['Close'].pct_change()
         data['Strategy'] = data['BuyHold'] * data['Signal'].shift(1)
 
-        # Calculate and print the strategy's overall returns
+        # Calculate and store the strategy's overall returns
         strategy_returns = data['Strategy'].sum()
-        print(f"{ticker}: Overall strategy returns = {strategy_returns:.2%}")
+        results[ticker] = strategy_returns
+
+    return results
+

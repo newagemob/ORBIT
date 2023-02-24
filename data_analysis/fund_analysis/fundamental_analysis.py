@@ -1,63 +1,84 @@
+'''
+This code performs fundamental analysis on a given stock ticker by calculating three financial ratios: P/E (price-to-earnings) ratio, P/B (price-to-book) ratio, and P/S (price-to-sales) ratio. It downloads financial statements from Yahoo Finance, calculates the financial ratios using historical stock data, and generates a report with the financial statements and ratios for the specified ticker. It also provides the option to perform the same analysis on a list of ticker symbols.
+'''
+
 import yfinance as yf
 import pandas as pd
 
-def calculate_ratios(df):
+
+def calculate_pe_ratio(close_price, eps):
     """
-    Calculates the ratios needed for Fundamental Analysis.
+    Calculates the Price-to-Earnings (P/E) Ratio.
     """
-    ratios = {}
+    return close_price / eps
 
-    # Calculate P/E Ratio
-    ratios['P/E Ratio'] = df['Close'][-1] / df['Earnings/Share'][-1]
 
-    # Calculate P/B Ratio
-    ratios['P/B Ratio'] = df['Close'][-1] / df['Book Value'][-1]
+def calculate_pb_ratio(close_price, book_value_per_share):
+    """
+    Calculates the Price-to-Book (P/B) Ratio.
+    """
+    return close_price / book_value_per_share
 
-    # Calculate P/S Ratio
-    ratios['P/S Ratio'] = df['Close'][-1] / df['Revenue/Share'][-1]
+
+def calculate_ps_ratio(close_price, revenue_per_share):
+    """
+    Calculates the Price-to-Sales (P/S) Ratio.
+    """
+    return close_price / revenue_per_share
+
+
+def get_financial_ratios(df):
+    """
+    Calculates the financial ratios needed for Fundamental Analysis.
+    """
+    close_price = df['Close'][-1]
+    eps = df['Earnings/Share'][-1]
+    book_value_per_share = df['Book Value'][-1]
+    revenue_per_share = df['Revenue/Share'][-1]
+
+    ratios = {
+        'P/E Ratio': calculate_pe_ratio(close_price, eps),
+        'P/B Ratio': calculate_pb_ratio(close_price, book_value_per_share),
+        'P/S Ratio': calculate_ps_ratio(close_price, revenue_per_share)
+    }
 
     return ratios
+
+
+def get_financial_statements(ticker_symbol):
+    """
+    Retrieves the financial statements for a given ticker symbol from Yahoo Finance.
+    """
+    stock_data = yf.Ticker(ticker_symbol)
+    income_statement = stock_data.financials.loc[['Total Revenue', 'Gross Profit', 'Operating Income']]
+    balance_sheet = stock_data.balance_sheet.loc[['Total Assets', 'Total Liabilities', 'Total Stockholder Equity']]
+    cash_flow = stock_data.cashflow.loc[['Total Cash From Operating Activities', 'Total Cashflows From Investing Activities', 'Total Cashflows From Financing Activities']]
+    
+    return income_statement, balance_sheet, cash_flow
+
 
 def analyze_fundamentals(ticker_symbol):
     """
     Performs Fundamental Analysis on a single stock.
     """
-    # Download data from Yahoo Finance
-    stock_data = yf.Ticker(ticker_symbol)
+    income_statement, balance_sheet, cash_flow = get_financial_statements(ticker_symbol)
+    history = yf.Ticker(ticker_symbol).history(period='max')
+    financial_ratios = get_financial_ratios(history)
 
-    # Get financial statements
-    income_statement = stock_data.financials.loc[['Total Revenue', 'Gross Profit', 'Operating Income']]
-    balance_sheet = stock_data.balance_sheet.loc[['Total Assets', 'Total Liabilities', 'Total Stockholder Equity']]
-    cash_flow = stock_data.cashflow.loc[['Total Cash From Operating Activities', 'Total Cashflows From Investing Activities', 'Total Cashflows From Financing Activities']]
-
-    # Calculate financial ratios
-    financial_ratios = calculate_ratios(stock_data.history(period="max"))
-
-    # Create report
-    report = f"\nFundamental Analysis Report for {ticker_symbol}\n\n"
-
-    report += "Income Statement:\n"
-    report += f"{income_statement}\n\n"
-
-    report += "Balance Sheet:\n"
-    report += f"{balance_sheet}\n\n"
-
-    report += "Cash Flow:\n"
-    report += f"{cash_flow}\n\n"
-
-    report += "Financial Ratios:\n"
-    for ratio, value in financial_ratios.items():
-        report += f"{ratio}: {value:.2f}\n"
+    report = {
+        'ticker': ticker_symbol,
+        'income_statement': income_statement.to_dict(),
+        'balance_sheet': balance_sheet.to_dict(),
+        'cash_flow': cash_flow.to_dict(),
+        'financial_ratios': financial_ratios
+    }
 
     return report
+
 
 def analyze_fundamentals_batch(ticker_symbols):
     """
     Performs Fundamental Analysis on a list of stocks.
     """
-    reports = []
-    for ticker_symbol in ticker_symbols:
-        report = analyze_fundamentals(ticker_symbol)
-        reports.append(report)
-
+    reports = [analyze_fundamentals(ticker_symbol) for ticker_symbol in ticker_symbols]
     return reports
