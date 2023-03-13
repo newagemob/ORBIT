@@ -3,12 +3,11 @@ import yfinance as yf
 import re
 import matplotlib.pyplot as plt
 from progress.bar import ChargingBar
+import time
 
 def get_index_data(filename: str, duration: str):
-    # read in the index list and select the top `num_stocks` by weight
     index_data = pd.read_csv(filename)
-    # count the number of rows in the DataFrame
-    num_stocks = len(index_data.index)
+    num_stocks = len(index_data) # count rows in the DataFrame
     index_top = index_data.nlargest(num_stocks, "Weight")
 
     # get the stock data from Yahoo Finance
@@ -53,19 +52,23 @@ def get_index_data(filename: str, duration: str):
     index_top["Annual Return"] = annual_returns
     index_top["Weekly Return"] = weekly_returns
 
+    # date for the output file
+    date = time.strftime("%Y-%m-%d")
+    # strip filename for the output file
+    index_name = filename.split("/")[-1].split(".")[0]
+
     # plot the top performers and losers
-    top10 = index_top.nlargest(10, "Annual Return")
+    top10 = index_top.nlargest(10, "Annual Return") # top 10 stocks in list by annual return
     top10.plot.bar(x="Symbol", y="Annual Return", rot=0)
-    plt.show()
-    plt.pause(5)
-    plt.close()
+    # save the plot to a file
+    plt.savefig(f"~/Developer/openliquid-capital/orbit/data_visualization/output/{index_name}_{date}_top10_annual.png")
 
-    top10.plot.bar(x="Symbol", y="Weekly Return", rot=0)
-    plt.show()
+    top10.plot.bar(x="Symbol", y="Weekly Return", rot=0) # top 10 stocks in list by weekly return
+    plt.savefig(f"~/Developer/openliquid-capital/orbit/data_visualization/output/{index_name}_{date}_top10_weekly.png")
 
-    bottom10 = index_top.nsmallest(10, "Annual Return")
+    bottom10 = index_top.nsmallest(10, "Annual Return") # bottom 10 stocks in list by annual return
     bottom10.plot.bar(x="Symbol", y="Annual Return", rot=0)
-    plt.show()
+    plt.savefig(f"~/Developer/openliquid-capital/orbit/data_visualization/output/{index_name}_{date}_bottom10_annual.png")
 
-    bottom10.plot.bar(x="Symbol", y="Weekly Return", rot=0)
-    plt.show()
+    bottom10.plot.bar(x="Symbol", y="Weekly Return", rot=0) # bottom 10 stocks in list by weekly return
+    plt.savefig(f"~/Developer/openliquid-capital/orbit/data_visualization/output/{index_name}_{date}_bottom10_weekly.png")
