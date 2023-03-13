@@ -1,4 +1,6 @@
 '''
+PCA is a dimensionality reduction technique that is used to reduce the number of features in a dataset while retaining as much information as possible. It's a linear transformation that projects the data into a lower dimensional space. The new features are called principal components and are the directions of maximum variance in the data. The first principal component is the direction of maximum variance, the second principal component is the direction of maximum variance that is orthogonal to the first principal component, and so on.
+
 This function takes in a pandas DataFrame and the desired number of components to keep after PCA, performs PCA on the features of the input DataFrame, and returns a transformed DataFrame with the specified number of components.
 
 The function is modular and can be used with any DataFrame that has a 'target' column and any desired number of components. It uses the PCA class from scikit-learn to perform the dimensionality reduction.

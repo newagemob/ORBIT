@@ -1,10 +1,13 @@
 import unittest
+from unittest.mock import patch
 import pandas as pd
-from data_collection.clean_data import clean_and_preprocess_data
+from io import StringIO
+import os
+from data_collection.SP500 import get_sp100
 
-class TestCleanData(unittest.TestCase):
-
-    def test_clean_and_preprocess_data(self):
+class TestSP500(unittest.TestCase):
+    # use get_sp100 to get the top 100 stocks from the S&P 500 and save them to a CSV file
+    def test_get_sp100(self):
         # Define input and output file paths
         input_file = './output/SP500.csv'
         output_file = './output/cleaned_SP500.csv'
@@ -14,7 +17,7 @@ class TestCleanData(unittest.TestCase):
         end_date = pd.to_datetime('2022-12-31')
 
         # Clean and preprocess data
-        df = clean_and_preprocess_data(input_file, output_file, start_date, end_date)
+        df = get_sp100(input_file, output_file, start_date, end_date)
 
         # Check that the output file was created
         with open(output_file, 'r') as f:
@@ -32,6 +35,7 @@ class TestCleanData(unittest.TestCase):
         expected_columns = ['Date', 'Price']
         output_df = pd.read_csv(output_file)
         self.assertListEqual(list(output_df.columns), expected_columns)
-
-if __name__ == '__main__':
+        
+if __name__ == "__main__":
     unittest.main()
+    # get_sp100("data_collection/SP500.csv", 100, "1y")

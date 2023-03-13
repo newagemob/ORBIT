@@ -1,20 +1,18 @@
-# Equal-Weight S&P 500 Index Fund
-
-import yfinance as yf
 import pandas as pd
-import xlsxwriter
-import matplotlib.pyplot as plt
+import yfinance as yf
 import re
+import matplotlib.pyplot as plt
 from progress.bar import ChargingBar
 
-
-def get_sp100(filename: str, num_stocks: int, duration: str):
-    # read in the S&P 500 list and select the top `num_stocks` by weight
-    sp500 = pd.read_csv(filename)
-    sp100 = sp500.nlargest(num_stocks, "Weight")
+def get_index_data(filename: str, duration: str):
+    # read in the index list and select the top `num_stocks` by weight
+    index_data = pd.read_csv(filename)
+    # count the number of rows in the DataFrame
+    num_stocks = len(index_data.index)
+    index_top = index_data.nlargest(num_stocks, "Weight")
 
     # get the stock data from Yahoo Finance
-    tickers = sp100["Symbol"].tolist()
+    tickers = index_top["Symbol"].tolist()
     bar = ChargingBar(f"Getting stock prices ({duration})", max=len(tickers))
 
     current_stock_data = []
@@ -48,22 +46,15 @@ def get_sp100(filename: str, num_stocks: int, duration: str):
     bar.finish()
 
     # add the stock data and calculated returns to the DataFrame
-    sp100["YFi Stock Price"] = current_stock_data
-    sp100["Total Value"] = sp100["YFi Stock Price"] * sp100["Weight"]
-    total_value = sp100["Total Value"].sum()
-    sp100["Percentage"] = sp100["Total Value"] / total_value
-    sp100["Annual Return"] = annual_returns
-    sp100["Weekly Return"] = weekly_returns
-
-    # output the data to files
-    writer = pd.ExcelWriter("sp100.xlsx", engine="xlsxwriter")
-    sp100.to_excel(writer, index=False, sheet_name="SP100")
-    writer.save()
-
-    sp100.to_csv("./output/sp100.csv", index=False)
+    index_top["YFi Stock Price"] = current_stock_data
+    index_top["Total Value"] = index_top["YFi Stock Price"] * index_top["Weight"]
+    total_value = index_top["Total Value"].sum()
+    index_top["Percentage"] = index_top["Total Value"] / total_value
+    index_top["Annual Return"] = annual_returns
+    index_top["Weekly Return"] = weekly_returns
 
     # plot the top performers and losers
-    top10 = sp100.nlargest(10, "Annual Return")
+    top10 = index_top.nlargest(10, "Annual Return")
     top10.plot.bar(x="Symbol", y="Annual Return", rot=0)
     plt.show()
     plt.pause(5)
@@ -72,7 +63,7 @@ def get_sp100(filename: str, num_stocks: int, duration: str):
     top10.plot.bar(x="Symbol", y="Weekly Return", rot=0)
     plt.show()
 
-    bottom10 = sp100.nsmallest(10, "Annual Return")
+    bottom10 = index_top.nsmallest(10, "Annual Return")
     bottom10.plot.bar(x="Symbol", y="Annual Return", rot=0)
     plt.show()
 

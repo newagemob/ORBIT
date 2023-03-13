@@ -82,14 +82,3 @@ def clean_and_preprocess_data(input_file, output_file, start_date, end_date):
     save_to_csv(df, output_file)
     
     return df
-
-# Define input and output file paths
-input_file = 'raw_stock_data.csv'
-output_file = 'cleaned_stock_data.csv'
-
-# Define start and end dates for time period to filter data
-start_date = pd.to_datetime('2022-01-01')
-end_date = pd.to_datetime('2022-12-31')
-
-# Clean and preprocess data
-clean_and_preprocess_data(input_file, output_file, start_date, end_date)

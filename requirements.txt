@@ -1,0 +1,42 @@
+# pip requirements.txt
+
+# Data Science
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+statsmodels
+
+# Deep Learning
+tensorflow
+keras
+pytorch
+
+# Natural Language Processing
+nltk
+spacy
+gensim
+
+# Computer Vision
+opencv
+scikit-image
+
+# Web Scraping
+beautifulsoup4
+selenium
+
+# Web Development
+flask
+django
+requests
+
+# Testing
+pytest
+unittest
+
+# Utilities
+tqdm # progress bar
+ipython
+jupyter
+jupyterlab
