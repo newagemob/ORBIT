@@ -79,7 +79,7 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
     yahoo_data = []
     # yahoo_data.extend(value for name, value in locals().items() if name.startswith('Previous Close'))
     
-    for index, row in tqdm.tqdm(df_slickcharts[0:5].iterrows(), total=df_slickcharts.shape[0]):
+    for index, row in tqdm.tqdm(df_slickcharts.iterrows(), total=df_slickcharts.shape[0]):
         yahoo_data.append(scrape_stock_symbol(row['Symbol']))
         df_yahoo = pd.DataFrame([yahoo_data])
         

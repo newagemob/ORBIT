@@ -1,3 +1,10 @@
 .DS_Store
 DONTREADME.md
 
+.env
+
+# Ignore all __pycache__ folders inside subfolders
+**/__pycache__/
+**/**/__pycache__/
+**/**/**/__pycache__/
+**/**/**/**/__pycache__/
