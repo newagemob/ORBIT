@@ -1,0 +1,5 @@
+backtesting
+data_analysis
+data_collection
+statistical_modeling
+trading_algorithms
