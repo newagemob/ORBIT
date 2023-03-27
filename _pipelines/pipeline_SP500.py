@@ -9,8 +9,9 @@
   
 """
 
-# 1. Data Collection
+# 1. Data Collection (Scraping 
 import methods.data_collection.run as data_collection
+data_collection.run("sp500", [])
 
 # 2. Human-Readable Visualization
 import methods.data_analysis.data_visualization as human_visualization
