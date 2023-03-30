@@ -11,6 +11,7 @@
 
 # 1. Data Collection (Scraping 
 import methods.data_collection.run as data_collection
+
 data_collection.run("sp500", [])
 
 # 2. Human-Readable Visualization

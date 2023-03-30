@@ -1,9 +1,10 @@
 import unittest
 from methods.data_analysis.data_visualization import human_readable
 from pathlib import Path
+import datetime
 
 project_dir = Path(__file__).resolve().parents[3]
-human_vis = human_readable.HumanVisualization(f'{project_dir}/data_collection/output/SP500/yahoo_sp500_stocks_2023-03-24.csv')
+human_vis = human_readable.HumanVisualization(f'{project_dir}/data_collection/output/SP500/yahoo_sp500_stocks_{datetime.now().strftime("%Y-%m-%d")}.csv')
 
 class TestHumanReadable(unittest.TestCase):
     def test_determine_trend(self):

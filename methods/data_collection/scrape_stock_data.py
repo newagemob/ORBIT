@@ -115,76 +115,7 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
 
         return df_yahoo
 
-
-def scrape_historical_sp500_stocks(start_date, end_date) -> pd.DataFrame:
-    """Scrapes CSV of historical S&P 500 stocks from every day between startDate and endDate.
-
-    Args:
-        startDate (str): _description_
-        endDate (str): _description_
-
-    Returns:
-        pd.DataFrame: A subdirectory of the data_collection/output/ directory containing a CSV file for each day between startDate and endDate.
-    """
-    # symbols = scrape_sp500_stocks_today()['Symbol'].tolist()
-    
-    # date will be formatted as YYYY-MM-DD
-    start = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.datetime.strptime(end_date, "%Y-%m-%d")
-    delta = end - start
-    print(delta.days)
-    dates = [(start + datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(delta.days + 1)]
-    for date in dates:
-        url = f""
-        try:
-            response = requests.get(url ,headers={'User-agent': 'Mozilla/5.0'})
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as err:
-            print(err)
-            return None
-        
-        data = response.json()
-        df = pd.DataFrame(data['results'])
-        df.to_csv(f"{project_dir}/orbit/methods/data_collection/output/SP500/historical/{date}.csv", index=False)
-        
-    return df
-
-
-def scrape_nasdaq_stocks_today() -> pd.DataFrame:
-    """
-    Scrapes the list of NASDAQ stocks from nasdaq.com and returns a DataFrame.
-    
-    Returns:
-    pd.DataFrame: A DataFrame containing the list of NASDAQ stocks.
-    """
-    url = "https://www.nasdaq.com/market-activity/stocks/screener"
-    try:
-        response = requests.get(url ,headers={'User-agent': 'Mozilla/5.0'})
-        response.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        return None
-    
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find_all("table")[0]
-    df = pd.read_html(str(table))[0]
-    df.to_csv("./output/nasdaq_stocks.csv", index=False)
-
-    return df
-
-
-def scrape_historical_nasdaq_stocks(startDate, endDate) -> pd.DataFrame:
-    """Scrapes CSV of historical NASDAQ stocks from every day between startDate and endDate.
-
-    Args:
-        startDate (str): _description_
-        endDate (str): _description_
-
-    Returns:
-        pd.DataFrame: A subdirectory of the data_collection/output/ directory containing a CSV file for each day between startDate and endDate.
-    """
-    
-    return
+    df_yahoo = yahoo_sp500_stocks()
 
 
 def scrape_stock_symbol(symbol: str) -> pd.DataFrame:
