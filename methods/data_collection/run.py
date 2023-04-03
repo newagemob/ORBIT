@@ -11,8 +11,7 @@ from data_collection.scrape_historical_stocks import main as scrape_historical_s
 
 # TODO: get these from `config.yaml`
 funds = {
-    "sp500": scrape_stock_data.scrape_sp500_stocks_today,
-    "nasdaq": scrape_stock_data.scrape_nasdaq_stocks_today,
+    "sp500": scrape_stock_data.scrape_sp500_stocks_today(),
 }
 
 stocks = {
@@ -23,29 +22,28 @@ stocks = {
     "nvda": scrape_stock_data.scrape_stock_symbol("NVDA"),
 }
 
-historical_funds = {
-    "sp500": scrape_historical_stocks,
-    "nasdaq": scrape_historical_stocks,
-}
+# historical_funds = {
+#     "sp500": scrape_historical_stocks(),
+# }
 
-historical_stocks = {
-    "aapl": scrape_historical_stocks,
-    "msft": scrape_historical_stocks,
-    "amzn": scrape_historical_stocks,
-    "googl": scrape_historical_stocks,
-    "nvda": scrape_historical_stocks,
-}
+# historical_stocks = {
+#     "aapl": scrape_historical_stocks(),
+#     "msft": scrape_historical_stocks(),
+#     "amzn": scrape_historical_stocks(),
+#     "googl": scrape_historical_stocks(),
+#     "nvda": scrape_historical_stocks(),
+# }
 
 class DataCollection:
     def __init__(self, fund: str, stocks: list):
         self.fund = fund
         self.stocks = stocks
-        self.historical_funds = historical_funds
-        self.historical_stocks = historical_stocks
+        # self.historical_funds = historical_funds
+        # self.historical_stocks = historical_stocks
 
     def run(self):
         if self.fund in funds:
-            # funds[self.fund]()
+            funds[self.fund]()
             return
         elif self.stocks in stocks:
             stocks[self.stocks]()

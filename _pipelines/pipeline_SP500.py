@@ -9,10 +9,13 @@
   
 """
 
-# 1. Data Collection (Scraping 
-import methods.data_collection.run as data_collection
 
-data_collection.run("sp500", [])
+# 1. Data Collection (Scraping current and historical data)
+import methods.data_collection.run as scraper
+# run the data collection script
+scraper
 
 # 2. Human-Readable Visualization
-import methods.data_analysis.data_visualization as human_visualization
+import methods.data_analysis.data_visualization.run as analyzer
+# run the data analysis script
+analyzer

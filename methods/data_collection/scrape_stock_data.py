@@ -5,6 +5,7 @@ from pathlib import Path
 import datetime
 from operator import itemgetter
 import tqdm
+import numpy as np
 # TODO: import the openbb package -- docs say I need a Windows machine to install it, but I'm going to try with my Debian machine
 # from openbb_terminal.sdk import openbb
 
@@ -40,7 +41,7 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
         # add the date to the last column of the DataFrame
         df_slickcharts['date'] = pd.Timestamp.today().strftime('%Y-%m-%d')
 
-        for index, row in tqdm.tqdm(df_slickcharts.iterrows(),  total=df_slickcharts.shape[0]):
+        for index, row in tqdm.tqdm(df_slickcharts.iterrows(), total=df_slickcharts.shape[0]):
             symbol_url = f"https://slickcharts.com/symbol/{row['Symbol']}"
 
             '''
@@ -83,6 +84,7 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
             df_slickcharts.at[index, 'Dividend Yield'] = data   [dividend_yield_index]
             df_slickcharts.at[index, 'Market Cap'] = data[market_cap_index]
 
+        df_slickcharts.dropna(inplace=True) # dataframe is modified in place
         df_slickcharts.to_csv(f"{project_dir}/orbit/methods/data_collection/output/SP500/slickcharts_sp500_stocks_{pd.Timestamp.today().strftime('%Y-%m-%d')}.csv", index=False)
         
         return df_slickcharts
@@ -111,11 +113,15 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
             for i in range(len(headers)):
                 df_yahoo.at[index, headers[i]] = data[i]
 
+        # Replace "N/A" and "undefined" with NaN
+        df_yahoo.replace("N/A", np.nan, inplace=True)
+        df_yahoo.replace("undefined", np.nan, inplace=True)
+        df_yahoo.dropna(inplace=True) # dataframe is modified in place
         df_yahoo.to_csv(f"{project_dir}/orbit/methods/data_collection/output/SP500/yahoo_sp500_stocks_{pd.Timestamp.today().strftime('%Y-%m-%d')}.csv", index=False)
 
         return df_yahoo
 
-    df_yahoo = yahoo_sp500_stocks()
+    yahoo_sp500_stocks()
 
 
 def scrape_stock_symbol(symbol: str) -> pd.DataFrame:
