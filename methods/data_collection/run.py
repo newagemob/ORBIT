@@ -6,8 +6,8 @@ This is the first step in the ORBIT pipeline. This script scrapes the specified 
 This script is currently only running on S&P 500 stocks, but can be easily modified to run on any other stock or fund by changing the specified_stocks variable.
 '''
 
-import data_collection.scrape_stock_data as scrape_stock_data
-from data_collection.scrape_historical_stocks import main as scrape_historical_stocks
+import methods.data_collection.scrape_stock_data as scrape_stock_data
+from methods.data_collection.scrape_historical_stocks import main as scrape_historical_stocks
 
 # TODO: get these from `config.yaml`
 funds = {

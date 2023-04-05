@@ -44,15 +44,6 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
         for index, row in tqdm.tqdm(df_slickcharts.iterrows(), total=df_slickcharts.shape[0]):
             symbol_url = f"https://slickcharts.com/symbol/{row['Symbol']}"
 
-            '''
-                Price	158.29	P/E (Trailing)	27.00
-                Change	-0.64	P/E (Forward)	24.05
-                Change %	-0.40%	EPS (Trailing)	5.89
-                Prev Close	158.93	EPS (Forward)	6.61
-                Volume	663,292	Dividend Yield	0.58%
-                Market Cap	2528.37B	Dividend	0.92
-            '''
-
             try:
                 response = requests.get(symbol_url ,headers={'User-agent':  'Mozilla/5.0'})
                 response.raise_for_status()
@@ -103,20 +94,20 @@ def scrape_sp500_stocks_today() -> pd.DataFrame:
         df_yahoo = pd.DataFrame()
 
         for index, row in tqdm.tqdm(df_slickcharts.iterrows(),  total=df_slickcharts.shape[0]):
-            # get headers and data returned from the scrape_stock_symbol    function
             stock_data = scrape_stock_symbol(row['Symbol'])
             symbol = stock_data[0]
             headers = stock_data[1]
             data = stock_data[2]
+            if data[0] == 'N/A':
+                continue
+
             # write the data to the DataFrame
             df_yahoo.at[index, 'Symbol'] = symbol
             for i in range(len(headers)):
                 df_yahoo.at[index, headers[i]] = data[i]
 
-        # Replace "N/A" and "undefined" with NaN
-        df_yahoo.replace("N/A", np.nan, inplace=True)
-        df_yahoo.replace("undefined", np.nan, inplace=True)
-        df_yahoo.dropna(inplace=True) # dataframe is modified in place
+        # Drop rows with N/A values in any column
+        df_yahoo.dropna(inplace=True)
         df_yahoo.to_csv(f"{project_dir}/orbit/methods/data_collection/output/SP500/yahoo_sp500_stocks_{pd.Timestamp.today().strftime('%Y-%m-%d')}.csv", index=False)
 
         return df_yahoo

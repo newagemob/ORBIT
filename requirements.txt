@@ -25,6 +25,7 @@ scikit-image
 # Web Scraping
 beautifulsoup4
 selenium
+lxml
 
 # Web Development
 flask
@@ -36,7 +37,7 @@ pytest
 unittest
 
 # Utilities
-tqdm # progress bar
+tqdm
 ipython
 jupyter
 jupyterlab
