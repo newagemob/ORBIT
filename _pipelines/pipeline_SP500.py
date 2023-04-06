@@ -11,14 +11,14 @@
 
 
 # 1. Data Collection (Scraping current and historical data)
-# import methods.data_collection.run as scraper
+import methods.data_collection.run as scraper
 # run the data collection script
-# scraper
+scraper
 
 # 2. Human + Machine Readable Data Visualization
 import methods.data_analysis.data_visualization.run as analyzer
 # run the data analysis script
 analyzer
 
-# 3. Create / Update the Machine Learning Model
+# 3. Create Data / Update the Machine Learning Model
 import methods.data_analysis.ml_models.run as ml

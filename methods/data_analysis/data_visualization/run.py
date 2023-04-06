@@ -68,16 +68,4 @@ def run_human_readable() -> None:
     top_10_annual_companies()
 
 
-def run_machine_readable() -> None:
-    data_analysis = MachineLearningData(
-        f'{methods_dir}/data_collection/output/SP500/yahoo_sp500_stocks_{dt.date.today()}.csv')
-
-    data_analysis.determine_annual_trend()
-    data_analysis.determine_annual_spread()
-    data_analysis.determine_annual_liquidity()
-    data_analysis.determine_annual_volatility()
-    data_analysis.determine_annual_momentum()
-    
-
 run_human_readable()
-run_machine_readable()

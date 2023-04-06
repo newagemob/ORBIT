@@ -22,7 +22,7 @@ class DecisionTree:
         annual_momentum = self.visualizer.determine_annual_momentum()
         # Each of the above functions returns a pandas dataframe with two columns (Symbol, Annual ___)
 
-        # create feature matrix
+        # create feature matrix -- this is the data used to predict the target vector
         X = pd.concat([annual_trend, annual_spread, annual_liquidity, annual_volatility, annual_momentum], axis=1)
 
         # create target vector
