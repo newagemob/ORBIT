@@ -9,7 +9,7 @@ seaborn
 statsmodels
 
 # Deep Learning
-tensorflow
+# tensorflow
 keras
 pytorch
 
@@ -19,7 +19,7 @@ spacy
 gensim
 
 # Computer Vision
-opencv
+opencv-python
 scikit-image
 
 # Web Scraping
@@ -34,7 +34,7 @@ requests
 
 # Testing
 pytest
-unittest
+unittest2
 
 # Utilities
 tqdm
