@@ -169,7 +169,7 @@ class MachineLearningData:
         data.to_csv(
             f"{project_dir}/methods/data_analysis/data_visualization/output/SP500/machine_readable/{filename}_{dt.date.today()}.csv")
 
-        print('✅ Data successfully exported to CSV!')
+        print('✅ Machine Readable Data successfully exported to CSV!')
 
     def export_data_to_json(self, data, filename):
         print('🔮 Exporting data to JSON...')
