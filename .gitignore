@@ -8,3 +8,11 @@ DONTREADME.md
 **/**/__pycache__/
 **/**/**/__pycache__/
 **/**/**/**/__pycache__/
+
+# CSV Outputs
+methods/data_analysis/data_visualization/output/SP500/human_readable/*
+methods/data_analysis/data_visualization/output/SP500/human_readable/*
+methods/data_analysis/data_visualization/output/SP500/machine_readable/*
+
+methods/data_collection/output/SP500/*
+methods/data_collection/output/SP500/historical/*
