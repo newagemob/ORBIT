@@ -129,3 +129,34 @@ ORBIT needs to know a few things before it can start working for you. Modify the
 * What is your preferred trading platform? This includes the type of platform, the parameters of the platform, and the platform rules. ***Note:*** *Default platforms are provided if none are specified.*
 * What is your preferred trading model? This includes the type of model, the parameters of the model, and the model rules. ***Note:*** *Default models are provided if none are specified.*
 ---
+
+
+```py
+# This is the setup script for the qsforex package. Use this to initialize the packages and modules in the qsforex directory.
+
+from setuptools import setup, find_packages
+
+setup(
+    name='qsforex',
+    version='0.1.0',
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=[
+      'ipython',
+      'matplotlib',
+      'mock',
+      'nose',
+      'numpy',
+      'pandas',
+      'pyparsing',
+      'python-dateutil',
+      'pytz',
+      'requests',
+      'scikit-learn',
+      'scipy',
+      'seaborn',
+      'six',
+      'urllib3',
+    ]
+)
+```
